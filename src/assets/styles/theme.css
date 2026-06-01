@@ -57,73 +57,6 @@ button {
   background: var(--bg);
 }
 
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: rgba(250, 246, 241, 0.86);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(20px) saturate(1.2);
-}
-
-.topbar-inner {
-  width: min(100%, 1200px);
-  height: 64px;
-  margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.brand-mark {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background: linear-gradient(135deg, #ff6b6b, #f43f5e);
-  box-shadow: 0 14px 28px rgba(244, 63, 94, 0.22);
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  font-weight: 800;
-  color: var(--muted);
-}
-
-.nav-links a {
-  position: relative;
-  padding: 8px 0;
-}
-
-.nav-links a.router-link-active {
-  color: var(--ink);
-}
-
-.nav-links a.router-link-active::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 2px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent-strong);
-}
-
 .workspace {
   min-height: calc(100vh - 64px);
   display: grid;
@@ -204,13 +137,15 @@ button {
 }
 
 .filter-h5,
-.filter-h5_video,
-.filter-h5_distribution,
-.filter-h5_growth,
+.filter-h5_novel,
+.filter-h5_yingshi,
+.filter-h5_fx,
+.filter-h5_lx,
 .stat-icon.h5,
-.stat-icon.h5_video,
-.stat-icon.h5_distribution,
-.stat-icon.h5_growth {
+.stat-icon.h5_novel,
+.stat-icon.h5_yingshi,
+.stat-icon.h5_fx,
+.stat-icon.h5_lx {
   background: var(--amber-bg);
   color: var(--amber-ink);
 }
@@ -417,6 +352,11 @@ button {
 
 .project-table th:nth-child(6),
 .project-table td:nth-child(6) {
+  width: 130px;
+}
+
+.project-table th:nth-child(7),
+.project-table td:nth-child(7) {
   width: 150px;
 }
 
@@ -449,7 +389,7 @@ button {
   white-space: nowrap;
 }
 
-.platform-wechat {
+.platform-weixin {
   color: var(--green-ink);
   background: var(--green-bg);
   border: 1px solid #bbf7d0;
@@ -501,15 +441,22 @@ button {
 }
 
 .category-h5,
-.category-h5_video,
-.category-h5_distribution,
-.category-h5_growth {
+.category-h5_novel,
+.category-h5_yingshi,
+.category-h5_fx,
+.category-h5_lx {
   color: #b45309;
   background: #fef3c7;
 }
 
 .action-col {
   text-align: center;
+}
+
+.update-time {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
 }
 
 .enter-link {
@@ -687,17 +634,8 @@ button {
 }
 
 @media (max-width: 560px) {
-  .topbar-inner {
-    padding: 0 16px;
-  }
-
   .brand {
     font-size: 16px;
-  }
-
-  .nav-links {
-    gap: 16px;
-    font-size: 14px;
   }
 
   .stats-grid,

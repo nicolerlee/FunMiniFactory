@@ -21,9 +21,11 @@ defineEmits(['update:modelValue'])
 
 const platforms = [
   { value: '', label: '全部平台' },
-  { value: 'wechat', label: '微信' },
+  { value: 'weixin', label: '微信' },
   { value: 'douyin', label: '抖音' },
   { value: 'kuaishou', label: '快手' },
+  { value: 'baidu', label: '百度' },
+  { value: 'alipay', label: '支付宝' },
   { value: 'web', label: 'H5' }
 ]
 </script>

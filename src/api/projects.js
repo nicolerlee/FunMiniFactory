@@ -9,8 +9,18 @@ function filterLocal(params = {}) {
   const page = Number(params.page || 1)
   const size = Number(params.size || DEFAULT_PAGE_SIZE)
 
+  // 首页侧栏「H5」是一个聚合类，覆盖 4 个 h5_* 子类
+  const H5_CATEGORIES = ['h5_novel', 'h5_yingshi', 'h5_fx', 'h5_lx']
+
   const filtered = mockProjects.filter((item) => {
-    const matchesCategory = category === 'all' || !category || item.category === category
+    let matchesCategory = true
+    if (category && category !== 'all') {
+      if (category === 'h5_group') {
+        matchesCategory = H5_CATEGORIES.includes(item.category)
+      } else {
+        matchesCategory = item.category === category
+      }
+    }
     const matchesPlatform = !platform || item.platform === platform
     const matchesKeyword = !keyword ||
       item.appName.toLowerCase().includes(keyword) ||

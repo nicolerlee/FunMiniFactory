@@ -67,7 +67,7 @@ const {
 const keyword = ref('')
 const syncing = ref(false)
 const taskStatus = ref('')
-const syncLabel = computed(() => syncing.value ? '同步中' : '立即同步')
+const syncLabel = computed(() => syncing.value ? '同步中' : '同步/刷新')
 
 let keywordTimer = null
 watch(keyword, (value) => {
@@ -99,7 +99,7 @@ async function pollTask(taskId) {
 async function handleRunSync() {
   syncing.value = true
   try {
-    const task = await runSync()
+    const task = await runSync('novel_miniapp')
     if (task?.taskId) {
       await pollTask(task.taskId)
     }

@@ -4,14 +4,14 @@ export const CATEGORY_META = {
   drama: { label: '短剧', shortLabel: '短剧', tone: 'drama' },
   comic: { label: '漫剧', shortLabel: '漫剧', tone: 'comic' },
   novel: { label: '小说', shortLabel: '小说', tone: 'novel' },
-  h5: { label: 'H5 小说', shortLabel: 'H5', tone: 'h5' },
-  h5_video: { label: 'H5 影视', shortLabel: 'H5影视', tone: 'h5_video' },
-  h5_distribution: { label: 'H5 分销', shortLabel: 'H5分销', tone: 'h5_distribution' },
-  h5_growth: { label: 'H5 拉新', shortLabel: 'H5拉新', tone: 'h5_growth' }
+  h5_novel: { label: 'H5 小说', shortLabel: 'H5小说', tone: 'h5' },
+  h5_yingshi: { label: 'H5 影视', shortLabel: 'H5影视', tone: 'h5' },
+  h5_fx: { label: 'H5 分销', shortLabel: 'H5分销', tone: 'h5' },
+  h5_lx: { label: 'H5 拉新', shortLabel: 'H5拉新', tone: 'h5' }
 }
 
 export const PLATFORM_META = {
-  wechat: { label: '微信', tone: 'wechat' },
+  weixin: { label: '微信', tone: 'weixin' },
   douyin: { label: '抖音', tone: 'douyin' },
   kuaishou: { label: '快手', tone: 'kuaishou' },
   baidu: { label: '百度', tone: 'baidu' },
