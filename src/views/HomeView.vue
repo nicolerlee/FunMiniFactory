@@ -264,10 +264,29 @@ onUnmounted(() => {
 <style scoped>
 /* ========== 整体 ========== */
 .home-page {
-  background: #faf6f1;
+  background:
+    radial-gradient(circle at 86% 28%, rgba(255, 183, 135, 0.42), transparent 34%),
+    radial-gradient(circle at 62% 76%, rgba(16, 185, 129, 0.12), transparent 30%),
+    radial-gradient(circle at 8% 58%, rgba(168, 85, 247, 0.13), transparent 34%),
+    linear-gradient(110deg, #faf6f1 0%, #faf6f1 46%, #fbeee3 100%);
+  background-attachment: fixed;
   color: #1a1a2e;
+  min-height: 100vh;
   overflow-x: hidden;
   font-family: 'Plus Jakarta Sans', 'Noto Sans SC', -apple-system, sans-serif;
+}
+
+.home-page :deep(.topbar) {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 0;
 }
 
 /* ========== 动画关键帧 ========== */
@@ -348,11 +367,12 @@ onUnmounted(() => {
 /* ========== HERO ========== */
 .hero {
   position: relative;
-  min-height: calc(100vh - 64px);
+  background: transparent;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 24px;
+  padding: 64px 24px 0;
   overflow: hidden;
 }
 
@@ -618,7 +638,7 @@ onUnmounted(() => {
 
 /* ========== 展示墙 ========== */
 .showcase-section {
-  background: linear-gradient(to bottom, #eef4ff, #f5f9ff, #faf6f1);
+  background: transparent;
 }
 .showcase-wall {
   display: flex;
@@ -637,8 +657,8 @@ onUnmounted(() => {
   z-index: 10;
   pointer-events: none;
 }
-.showcase-wall::before { top: 0; background: linear-gradient(to bottom, #eef4ff, transparent); }
-.showcase-wall::after { bottom: 0; background: linear-gradient(to top, #faf6f1, transparent); }
+.showcase-wall::before { top: 0; background: linear-gradient(to bottom, rgba(250, 246, 241, 0.92), transparent); }
+.showcase-wall::after { bottom: 0; background: linear-gradient(to top, rgba(250, 246, 241, 0.92), transparent); }
 
 .showcase-col {
   flex: 1;
@@ -679,8 +699,11 @@ onUnmounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
 }
 .footer-brand { display: inline-flex; align-items: center; gap: 8px; }
 .footer-brand-mark {
@@ -712,6 +735,6 @@ onUnmounted(() => {
   .hero-text h1 { font-size: 32px; }
   .platform-grid, .cat-grid { grid-template-columns: 1fr; }
   .showcase-wall { height: 380px; }
-  .footer-inner { flex-direction: column; gap: 12px; }
+  .footer-inner { gap: 12px; }
 }
 </style>

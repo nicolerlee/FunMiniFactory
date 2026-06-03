@@ -42,7 +42,8 @@ const route = useRoute()
 
 const navItems = [
   { to: '/', label: '首页', match: (path) => path === '/' },
-  { to: '/factory', label: '小程序工厂', match: (path) => path.startsWith('/factory') }
+  { to: '/factory', label: '小程序工厂', match: (path) => path.startsWith('/factory') },
+  { to: '/stats', label: '统计看板', match: (path) => path.startsWith('/stats') }
 ]
 
 function isActive(item) {
@@ -55,10 +56,13 @@ function isActive(item) {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(250, 246, 241, 0.8);
+  background:
+    radial-gradient(circle at 86% 220%, rgba(255, 183, 135, 0.28), transparent 42%),
+    radial-gradient(circle at 8% 220%, rgba(168, 85, 247, 0.08), transparent 42%),
+    linear-gradient(110deg, #faf6f1 0%, #faf6f1 46%, #fbeee3 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 0;
   /* 锁定字体，避免被父级（HomeView 的 Plus Jakarta Sans / FactoryView 的 Inter）继承差异影响 */
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -66,9 +70,8 @@ function isActive(item) {
 }
 
 .topbar-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
+  width: 100%;
+  padding: 0 48px;
   height: 64px;
   display: flex;
   align-items: center;

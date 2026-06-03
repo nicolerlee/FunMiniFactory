@@ -5,7 +5,19 @@ import { CATEGORY_META, DEFAULT_PAGE_SIZE } from '@/utils/constants'
 export function useProjects() {
   const loading = ref(false)
   const projects = ref([])
-  const stats = ref({ total: 0, byCategory: [], byPlatform: [], recent: [] })
+  const stats = ref({
+    total: 0,
+    byCategory: [],
+    byPlatform: [],
+    byCategoryPlatform: [],
+    newTrend: [],
+    byStatus: [],
+    byOwner: [],
+    freshness: { updatedIn7Days: 0, staleOver30Days: 0, staleOver90Days: 0 },
+    syncHealth: { success: 0, failed: 0, running: 0, unknown: 0 },
+    dataQuality: { missingOwner: 0, missingVersion: 0, missingBuildConfig: 0, missingAfterFull: 0 },
+    recent: []
+  })
   const query = reactive({
     keyword: '',
     category: 'all',

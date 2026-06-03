@@ -10,33 +10,37 @@
       />
 
       <main class="main-panel">
-        <div class="page-heading">
-          <div>
-            <h1>小程序列表</h1>
-            <p>管理所有平台的小程序代码包，查看状态并进入对应子系统</p>
+        <div class="factory-controls">
+          <div class="page-heading">
+            <div>
+              <h1>小程序列表</h1>
+              <p>管理所有平台的小程序代码包，查看状态并进入对应子系统</p>
+            </div>
+            <button class="sync-button" type="button" :disabled="syncing" @click="handleRunSync">
+              <RefreshCw :size="16" :class="{ spin: syncing }" />
+              {{ syncLabel }}
+            </button>
           </div>
-          <button class="sync-button" type="button" :disabled="syncing" @click="handleRunSync">
-            <RefreshCw :size="16" :class="{ spin: syncing }" />
-            {{ syncLabel }}
-          </button>
+
+          <div class="toolbar">
+            <ProjectSearch v-model="keyword" />
+            <ProjectFilter
+              :platform="query.platform"
+              :category="query.category"
+              @change="onFilterChange"
+            />
+          </div>
         </div>
 
-        <div class="toolbar">
-          <ProjectSearch v-model="keyword" />
-          <ProjectFilter
-            :platform="query.platform"
-            :category="query.category"
-            @change="onFilterChange"
+        <div class="factory-list-scroll">
+          <ProjectTable :projects="projects" :loading="loading" />
+          <Pagination
+            :page="query.page"
+            :size="query.size"
+            :total="total"
+            @change="changePage"
           />
         </div>
-
-        <ProjectTable :projects="projects" :loading="loading" />
-        <Pagination
-          :page="query.page"
-          :size="query.size"
-          :total="total"
-          @change="changePage"
-        />
       </main>
     </div>
   </div>

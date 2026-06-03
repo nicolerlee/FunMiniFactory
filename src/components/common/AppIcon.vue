@@ -17,6 +17,7 @@ import {
   Settings,
   Sparkles,
   Theater,
+  TriangleAlert,
   Users,
   Zap
 } from 'lucide-vue-next'
@@ -44,7 +45,8 @@ const icons = {
   settings: Settings,
   stats: BarChart3,
   sync: Sparkles,
-  ok: BadgeCheck
+  ok: BadgeCheck,
+  warning: TriangleAlert
 }
 
 const icon = computed(() => icons[props.name] || Monitor)
