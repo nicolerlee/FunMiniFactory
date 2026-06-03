@@ -1,31 +1,57 @@
 <template>
   <div class="quick-filter">
     <button
-      v-for="platform in platforms"
-      :key="platform.value"
+      v-for="item in items"
+      :key="item.label"
       type="button"
-      :class="{ on: modelValue === platform.value }"
-      @click="$emit('update:modelValue', platform.value)"
+      :class="{ on: isActive(item) }"
+      @click="onSelect(item)"
     >
-      {{ platform.label }}
+      {{ item.label }}
     </button>
   </div>
 </template>
 
 <script setup>
-defineProps({
-  modelValue: { type: String, default: '' }
+const props = defineProps({
+  platform: { type: String, default: '' },
+  category: { type: String, default: 'all' }
 })
 
-defineEmits(['update:modelValue'])
+const emit = defineEmits(['change'])
 
-const platforms = [
-  { value: '', label: '全部平台' },
-  { value: 'weixin', label: '微信' },
-  { value: 'douyin', label: '抖音' },
-  { value: 'kuaishou', label: '快手' },
-  { value: 'baidu', label: '百度' },
-  { value: 'alipay', label: '支付宝' },
-  { value: 'web', label: 'H5' }
+const items = [
+  { label: '全部平台', kind: 'all' },
+  { label: '微信', kind: 'platform', value: 'weixin' },
+  { label: '抖音', kind: 'platform', value: 'douyin' },
+  { label: '快手', kind: 'platform', value: 'kuaishou' },
+  { label: '百度', kind: 'platform', value: 'baidu' },
+  { label: '支付宝', kind: 'platform', value: 'alipay' },
+  { label: '通用', kind: 'platform', value: 'common' }
 ]
+
+function isAllCategory(category) {
+  return !category || category === 'all'
+}
+
+function isActive(item) {
+  if (item.kind === 'all') {
+    return !props.platform && isAllCategory(props.category)
+  }
+  if (item.kind === 'platform') {
+    return props.platform === item.value && isAllCategory(props.category)
+  }
+  return false
+}
+
+function onSelect(item) {
+  if (item.kind === 'all') {
+    emit('change', { platform: '', category: 'all' })
+    return
+  }
+  if (item.kind === 'platform') {
+    emit('change', { platform: item.value, category: 'all' })
+    return
+  }
+}
 </script>

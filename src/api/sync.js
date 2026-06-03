@@ -2,7 +2,7 @@ import { http } from './http'
 
 const fallbackStatus = [
   { source: 'novel_miniapp', lastSuccessChangeId: 10086, lastStatus: 'success', lastSuccessTime: '2026-05-29T14:20:00+08:00' },
-  { source: 'video_miniapp', lastSuccessChangeId: 12099, lastStatus: 'success', lastSuccessTime: '2026-05-29T14:19:00+08:00' },
+  { source: 'yingshi_miniapp', lastSuccessChangeId: 12099, lastStatus: 'success', lastSuccessTime: '2026-05-29T14:19:00+08:00' },
   { source: 'h5', lastSuccessChangeId: 3021, lastStatus: 'success', lastSuccessTime: '2026-05-29T14:18:00+08:00' }
 ]
 

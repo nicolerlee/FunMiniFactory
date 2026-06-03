@@ -12,8 +12,8 @@
     <svg v-else-if="platform === 'kuaishou'" class="plat-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M13 2L3 14h7l-1 8 10-12h-7z" />
     </svg>
-    <!-- 百度 / 支付宝 / 默认其它平台都用一个圆点 -->
-    <svg v-else-if="platform === 'baidu' || platform === 'alipay'" class="plat-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <!-- 百度 / 支付宝 / 通用 -->
+    <svg v-else-if="platform === 'baidu' || platform === 'alipay' || platform === 'common'" class="plat-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <circle cx="12" cy="12" r="6" />
     </svg>
     <!-- H5 / web -->
@@ -84,5 +84,10 @@ const label = computed(() => platformLabel(props.platform))
 .platform-alipay {
   color: #0369a1;
   background: #e0f2fe;
+}
+
+.platform-common {
+  color: #374151;
+  background: #f3f4f6;
 }
 </style>

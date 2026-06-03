@@ -112,20 +112,20 @@ button {
   color: #fff;
 }
 
-.filter-video,
-.stat-icon.video {
+.filter-yingshi,
+.stat-icon.yingshi {
   background: var(--rose-bg);
   color: var(--rose-ink);
 }
 
-.filter-drama,
-.stat-icon.drama {
+.filter-playlet,
+.stat-icon.playlet {
   background: var(--blue-bg);
   color: var(--blue-ink);
 }
 
-.filter-comic,
-.stat-icon.comic {
+.filter-manju,
+.stat-icon.manju {
   background: var(--violet-bg);
   color: var(--violet-ink);
 }
@@ -139,13 +139,13 @@ button {
 .filter-h5,
 .filter-h5_novel,
 .filter-h5_yingshi,
-.filter-h5_fx,
-.filter-h5_lx,
+.filter-h5_fenxiao,
+.filter-h5_laxin,
 .stat-icon.h5,
 .stat-icon.h5_novel,
 .stat-icon.h5_yingshi,
-.stat-icon.h5_fx,
-.stat-icon.h5_lx {
+.stat-icon.h5_fenxiao,
+.stat-icon.h5_laxin {
   background: var(--amber-bg);
   color: var(--amber-ink);
 }
@@ -443,8 +443,8 @@ button {
 .category-h5,
 .category-h5_novel,
 .category-h5_yingshi,
-.category-h5_fx,
-.category-h5_lx {
+.category-h5_fenxiao,
+.category-h5_laxin {
   color: #b45309;
   background: #fef3c7;
 }

@@ -23,7 +23,11 @@
 
         <div class="toolbar">
           <ProjectSearch v-model="keyword" />
-          <ProjectFilter :model-value="query.platform" @update:model-value="setPlatform" />
+          <ProjectFilter
+            :platform="query.platform"
+            :category="query.category"
+            @change="onFilterChange"
+          />
         </div>
 
         <ProjectTable :projects="projects" :loading="loading" />
@@ -75,8 +79,9 @@ watch(keyword, (value) => {
   keywordTimer = window.setTimeout(() => setKeyword(value), 220)
 })
 
-function setPlatform(platform) {
-  query.platform = platform
+function onFilterChange({ platform, category }) {
+  query.platform = platform || ''
+  query.category = category || 'all'
   query.page = 1
   loadProjects()
 }
