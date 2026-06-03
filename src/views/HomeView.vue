@@ -193,9 +193,9 @@ const platforms = [
 ]
 
 const categories = [
-  { key: 'video', label: '影视', en: 'Video Mini App', emoji: '🎬', bg: '#ffe4e6' },
-  { key: 'drama', label: '短剧', en: 'Drama Mini App', emoji: '🎬', bg: '#dbeafe' },
-  { key: 'comic', label: '漫剧', en: 'Comic Mini App', emoji: '🎭', bg: '#f3e8ff' },
+  { key: 'yingshi', label: '影视', en: 'Video Mini App', emoji: '🎬', bg: '#ffe4e6' },
+  { key: 'playlet', label: '短剧', en: 'Drama Mini App', emoji: '🎬', bg: '#dbeafe' },
+  { key: 'manju', label: '漫剧', en: 'Comic Mini App', emoji: '🎭', bg: '#f3e8ff' },
   { key: 'novel', label: '小说', en: 'Novel Mini App', emoji: '📖', bg: '#d1fae5' },
   { key: 'h5', label: 'H5', en: 'H5 Web Project', emoji: '🖥️', bg: '#fef3c7' }
 ]
@@ -597,9 +597,9 @@ onUnmounted(() => {
 }
 .cat-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.12); }
 .cat-card:hover::before { opacity: 1; }
-.cat-card.cat-video::before { background: linear-gradient(90deg, #f43f5e, #fb7185); }
-.cat-card.cat-drama::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
-.cat-card.cat-comic::before { background: linear-gradient(90deg, #a855f7, #c084fc); }
+.cat-card.cat-yingshi::before { background: linear-gradient(90deg, #f43f5e, #fb7185); }
+.cat-card.cat-playlet::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.cat-card.cat-manju::before { background: linear-gradient(90deg, #a855f7, #c084fc); }
 .cat-card.cat-novel::before { background: linear-gradient(90deg, #10b981, #34d399); }
 .cat-card.cat-h5::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
 

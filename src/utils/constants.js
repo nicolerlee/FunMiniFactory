@@ -1,9 +1,9 @@
 export const CATEGORY_META = {
   all: { label: '全部项目', shortLabel: '全部', tone: 'all' },
-  video: { label: '影视', shortLabel: '影视', tone: 'yingshi' },
-  drama: { label: '短剧', shortLabel: '短剧', tone: 'playlet' },
-  comic: { label: '漫剧', shortLabel: '漫剧', tone: 'manju' },
-  novel: { label: '小说', shortLabel: '小说', tone: 'novel' },
+  yingshi: { label: '影视小程序', shortLabel: '影视', tone: 'yingshi' },
+  playlet: { label: '短剧小程序', shortLabel: '短剧', tone: 'playlet' },
+  manju: { label: '漫剧小程序', shortLabel: '漫剧', tone: 'manju' },
+  novel: { label: '小说小程序', shortLabel: '小说', tone: 'novel' },
   h5_novel: { label: 'H5 小说', shortLabel: 'H5小说', tone: 'h5' },
   h5_yingshi: { label: 'H5 影视', shortLabel: 'H5影视', tone: 'h5' },
   h5_fenxiao: { label: 'H5 分销', shortLabel: 'H5分销', tone: 'h5' },
@@ -25,7 +25,10 @@ export const SOURCE_META = {
   playlet_miniapp: '短剧小程序',
   manju_miniapp: '漫剧小程序',
   yingshi_miniapp: '影视小程序',
-  h5: 'H5'
+  h5_novel: 'H5小说',
+  h5_yingshi: 'H5影视',
+  h5_fenxiao: 'H5分销',
+  h5_laxin: 'H5拉新'
 }
 
 export const DEFAULT_PAGE_SIZE = 20

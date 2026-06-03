@@ -27,7 +27,7 @@
 html,
 body,
 #app {
-  min-height: 100%;
+  height: 100%;
   margin: 0;
 }
 
@@ -57,15 +57,24 @@ button {
   background: var(--bg);
 }
 
+.factory-frame {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .workspace {
-  min-height: calc(100vh - 64px);
+  height: calc(100vh - 64px);
+  min-height: 0;
   display: grid;
   grid-template-columns: 244px minmax(0, 1fr);
+  overflow: hidden;
 }
 
 .sidebar {
   padding: 36px 16px;
   border-right: 1px solid var(--border);
+  height: calc(100vh - 64px);
+  overflow-y: auto;
 }
 
 .sidebar-section-title {
@@ -169,6 +178,7 @@ button {
 .main-panel {
   padding: 36px 36px 56px;
   overflow: auto;
+  min-height: 0;
 }
 
 .page-heading,
@@ -425,17 +435,17 @@ button {
   background: #d1fae5;
 }
 
-.category-comic {
+.category-manju {
   color: #7c3aed;
   background: #f3e8ff;
 }
 
-.category-video {
+.category-yingshi {
   color: #be123c;
   background: #ffe4e6;
 }
 
-.category-drama {
+.category-playlet {
   color: #1d4ed8;
   background: #dbeafe;
 }
@@ -590,6 +600,7 @@ button {
 @media (max-width: 900px) {
   .workspace {
     grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
   }
 
   .sidebar {
@@ -599,6 +610,8 @@ button {
     border-right: 0;
     border-bottom: 1px solid var(--border);
     padding: 16px;
+    height: auto;
+    overflow-y: visible;
   }
 
   .sidebar-section-title {

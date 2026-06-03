@@ -30,27 +30,23 @@ const items = [
   { label: '通用', kind: 'platform', value: 'common' }
 ]
 
-function isAllCategory(category) {
-  return !category || category === 'all'
-}
-
 function isActive(item) {
   if (item.kind === 'all') {
-    return !props.platform && isAllCategory(props.category)
+    return !props.platform
   }
   if (item.kind === 'platform') {
-    return props.platform === item.value && isAllCategory(props.category)
+    return props.platform === item.value
   }
   return false
 }
 
 function onSelect(item) {
   if (item.kind === 'all') {
-    emit('change', { platform: '', category: 'all' })
+    emit('change', { platform: '' })
     return
   }
   if (item.kind === 'platform') {
-    emit('change', { platform: item.value, category: 'all' })
+    emit('change', { platform: item.value })
     return
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-frame">
+  <div class="app-frame factory-frame">
     <AppTopbar />
     <div class="workspace">
       <AppSidebar
@@ -81,7 +81,9 @@ watch(keyword, (value) => {
 
 function onFilterChange({ platform, category }) {
   query.platform = platform || ''
-  query.category = category || 'all'
+  if (category !== undefined) {
+    query.category = category || 'all'
+  }
   query.page = 1
   loadProjects()
 }

@@ -30,9 +30,9 @@ const props = defineProps({
 
 const icons = {
   all: Grid2X2,
-  video: Film,
-  drama: Clapperboard,
-  comic: Theater,
+  yingshi: Film,
+  playlet: Clapperboard,
+  manju: Theater,
   novel: BookOpen,
   h5: Globe2,
   h5_novel: BookOpen,
