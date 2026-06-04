@@ -78,12 +78,25 @@
             <div ref="trendChartRef" class="trend-chart-box"></div>
             <div class="trend-legend" :class="{ show: trendMode === 'category' }">
               <button
+                type="button"
+                class="legend-pill legend-all"
+                :class="{ selected: isAllCategoriesActive }"
+                :aria-pressed="isAllCategoriesActive"
+                @click="showAllTrendCategories"
+              >
+                全部
+              </button>
+              <button
                 v-for="item in categoryRows"
                 :key="item.category"
                 type="button"
                 class="legend-pill"
-                :class="{ inactive: !activeCategoryKeys.includes(item.category) }"
-                @click="toggleLegendCategory(item.category)"
+                :class="{
+                  inactive: !activeCategoryKeys.includes(item.category),
+                  selected: isOnlyCategoryActive(item.category)
+                }"
+                :aria-pressed="activeCategoryKeys.includes(item.category)"
+                @click="selectTrendCategory(item.category)"
               >
                 <span class="dot" :style="{ background: item.color }"></span>
                 {{ item.label }}
@@ -220,8 +233,11 @@ const trendTotal = computed(() => (stats.value.newTrend || []).reduce((sum, item
 const miniappTotal = computed(() => miniappRows.value.reduce((sum, item) => sum + item.count, 0))
 const h5Total = computed(() => h5Rows.value.reduce((sum, item) => sum + item.count, 0))
 const lastUpdatedText = computed(() => lastUpdatedAt.value ? relativeTime(lastUpdatedAt.value) : '-')
+const isAllCategoriesActive = computed(() => {
+  return categoryRows.value.length > 0 && activeCategoryKeys.value.length === categoryRows.value.length
+})
 const trendSubtitle = computed(() => {
-  return trendMode.value === 'category' ? '按当前分类占比拆分的 30 天趋势' : '最近 30 天每日新增项目走势'
+  return trendMode.value === 'category' ? '按分类统计的 30 天趋势' : '最近 30 天每日新增项目走势'
 })
 
 watch(categoryRows, (rows) => {
@@ -266,17 +282,20 @@ function setTrendMode(mode) {
   }
 }
 
-function toggleLegendCategory(category) {
-  const current = activeCategoryKeys.value
-  if (!current.includes(category)) {
-    activeCategoryKeys.value = [...current, category]
+function showAllTrendCategories() {
+  activeCategoryKeys.value = categoryRows.value.map((item) => item.category)
+}
+
+function selectTrendCategory(category) {
+  if (isOnlyCategoryActive(category)) {
+    showAllTrendCategories()
     return
   }
-  if (current.length === 1) {
-    activeCategoryKeys.value = categoryRows.value.map((item) => item.category)
-    return
-  }
-  activeCategoryKeys.value = current.filter((key) => key !== category)
+  activeCategoryKeys.value = [category]
+}
+
+function isOnlyCategoryActive(category) {
+  return activeCategoryKeys.value.length === 1 && activeCategoryKeys.value[0] === category
 }
 
 function renderTrendChart() {
@@ -762,6 +781,22 @@ const CategoryCard = defineComponent({
   font-size: 11px;
   font-weight: 700;
   transition: all 0.15s ease;
+}
+
+.legend-pill:hover {
+  border-color: rgba(26, 26, 46, 0.22);
+  transform: translateY(-1px);
+}
+
+.legend-pill.selected {
+  border-color: rgba(26, 26, 46, 0.18);
+  background: #1a1a2e;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(26, 26, 46, 0.12);
+}
+
+.legend-all {
+  padding-inline: 12px;
 }
 
 .legend-pill.inactive {
