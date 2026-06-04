@@ -43,7 +43,7 @@ const route = useRoute()
 const navItems = [
   { to: '/', label: '首页', match: (path) => path === '/' },
   { to: '/factory', label: '小程序工厂', match: (path) => path.startsWith('/factory') },
-  { to: '/stats', label: '统计看板', match: (path) => path.startsWith('/stats') }
+  { to: '/stats', label: '资产大盘', match: (path) => path.startsWith('/stats') }
 ]
 
 function isActive(item) {

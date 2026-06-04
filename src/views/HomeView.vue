@@ -97,6 +97,7 @@
       </div>
     </section>
 
+    <!-- TODO: 暂时隐藏 Showcase 区块，等有正式图后再展示，请勿删除以下代码
     <section class="section showcase-section">
       <div class="container">
         <div class="section-head reveal">
@@ -126,6 +127,7 @@
         </div>
       </div>
     </section>
+    -->
 
     <section class="section cta-section">
       <div class="cta-container reveal">
@@ -477,12 +479,12 @@ onUnmounted(() => {
   position: absolute;
   width: 56px;
   height: 56px;
-  border-radius: 18px;
-  background: #fff;
+  border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
 }
@@ -493,8 +495,7 @@ onUnmounted(() => {
 .cloud-icon img {
   width: 44px;
   height: 44px;
-  border-radius: 12px;
-  object-fit: cover;
+  object-fit: contain;
 }
 .cloud-emoji {
   position: absolute;
@@ -569,8 +570,7 @@ onUnmounted(() => {
 .platform-card-img img {
   width: 100%;
   height: 100%;
-  border-radius: 18px;
-  object-fit: cover;
+  object-fit: contain;
 }
 .platform-card h3 { margin: 0 0 4px; font-size: 18px; font-weight: 800; }
 .platform-card p { margin: 0; font-size: 13px; color: #b4b4c7; }
