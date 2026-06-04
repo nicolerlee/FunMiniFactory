@@ -1,17 +1,13 @@
 <template>
   <div class="home-page">
-    <!-- 顶部导航 -->
     <AppTopbar />
 
-    <!-- ========== HERO ========== -->
     <section class="hero">
-      <!-- 装饰背景球 -->
       <div class="blob blob-1"></div>
       <div class="blob blob-2"></div>
       <div class="blob blob-3"></div>
 
       <div class="hero-grid">
-        <!-- 左侧文字 -->
         <div class="hero-text">
           <h1 class="hero-title animate-slide-up delay-1">
             一站式<br />
@@ -27,13 +23,10 @@
               查看全部项目
               <ArrowRight :size="16" :stroke-width="2.5" />
             </RouterLink>
-            <span class="hero-cta-hint">或按类型浏览 ↓</span>
           </div>
         </div>
 
-        <!-- 右侧图标墙 -->
         <div class="hero-cloud animate-slide-right delay-3">
-          <!-- 中心标 -->
           <div class="cloud-core">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
               <rect x="2" y="3" width="20" height="14" rx="3" />
@@ -42,32 +35,24 @@
             </svg>
           </div>
 
-          <!-- 平台 logo 自由浮动 -->
-          <div class="cloud-icon float-1" style="top: 12%; left: 10%;">
-            <img src="/icons/platform/douyin_logo.png" alt="抖音" />
+          <div
+            v-for="item in cloudLogos"
+            :key="item.alt"
+            class="cloud-icon"
+            :class="item.float"
+            :style="item.style"
+          >
+            <img :src="item.img" :alt="item.alt" />
           </div>
-          <div class="cloud-icon float-2" style="top: 4%; right: 18%;">
-            <img src="/icons/platform/weixin_logo.png" alt="微信" />
+          <div
+            v-for="item in cloudEmojis"
+            :key="`${item.emoji}-${item.style}`"
+            class="cloud-emoji"
+            :class="item.float"
+            :style="item.style"
+          >
+            {{ item.emoji }}
           </div>
-          <div class="cloud-icon float-3" style="bottom: 22%; left: 6%;">
-            <img src="/icons/platform/kuaishou_logo.png" alt="快手" />
-          </div>
-          <div class="cloud-icon float-4" style="top: 32%; left: 28%;">
-            <img src="/icons/platform/baidu_logo.png" alt="百度" />
-          </div>
-          <div class="cloud-icon float-5" style="bottom: 12%; right: 22%;">
-            <img src="/icons/platform/xiaohongshu_logo.png" alt="小红书" />
-          </div>
-          <div class="cloud-icon float-1" style="top: 32%; right: 8%;">
-            <img src="/icons/platform/zhifubao_logo.png" alt="支付宝" />
-          </div>
-
-          <!-- 品类 emoji -->
-          <div class="cloud-emoji float-3" style="top: 2%; left: 50%; transform: translateX(-50%); background: #ffe4e6;">🎬</div>
-          <div class="cloud-emoji float-2" style="bottom: 18%; right: 6%; background: #dbeafe;">🎬</div>
-          <div class="cloud-emoji float-4" style="top: 60%; left: 14%; background: #f3e8ff;">🎭</div>
-          <div class="cloud-emoji float-5" style="bottom: 4%; left: 30%; background: #d1fae5;">📖</div>
-          <div class="cloud-emoji float-1" style="top: 48%; right: 24%; background: #fef3c7;">🖥️</div>
         </div>
       </div>
 
@@ -76,13 +61,12 @@
       </div>
     </section>
 
-    <!-- ========== 平台覆盖 ========== -->
     <section class="section">
       <div class="container">
         <div class="section-head reveal">
           <span class="section-eyebrow">Platforms</span>
           <h2 class="section-title">覆盖主流平台</h2>
-          <p class="section-desc">打通微信、抖音、快手，全面触达用户</p>
+          <p class="section-desc">打通微信、抖音、快手，百度，支付宝，全面触达用户</p>
         </div>
         <div class="platform-grid reveal">
           <div v-for="p in platforms" :key="p.label" class="platform-card">
@@ -96,7 +80,6 @@
       </div>
     </section>
 
-    <!-- ========== 品类覆盖 ========== -->
     <section class="section">
       <div class="container">
         <div class="section-head reveal">
@@ -114,7 +97,6 @@
       </div>
     </section>
 
-    <!-- ========== 项目展示墙 ========== -->
     <section class="section showcase-section">
       <div class="container">
         <div class="section-head reveal">
@@ -134,7 +116,6 @@
               :class="col.direction === 'up' ? 'scroll-up' : 'scroll-down'"
               :style="{ '--speed': col.speed }"
             >
-              <!-- 复制 2 份做无缝滚动 -->
               <ShowcaseCard
                 v-for="(card, i) in [...col.cards, ...col.cards]"
                 :key="`${idx}-${i}`"
@@ -146,7 +127,6 @@
       </div>
     </section>
 
-    <!-- ========== CTA ========== -->
     <section class="section cta-section">
       <div class="cta-container reveal">
         <h2>准备好管理你的项目了吗？</h2>
@@ -158,7 +138,6 @@
       </div>
     </section>
 
-    <!-- ========== Footer ========== -->
     <footer class="site-footer">
       <div class="footer-inner">
         <div class="footer-brand">
@@ -200,7 +179,23 @@ const categories = [
   { key: 'h5', label: 'H5', en: 'H5 Web Project', emoji: '🖥️', bg: '#fef3c7' }
 ]
 
-// 展示墙 4 列：交替方向，不同速度，避免节奏一致
+const cloudLogos = [
+  { alt: '抖音', img: '/icons/platform/douyin_logo.png', float: 'float-1', style: 'top: 12%; left: 10%;' },
+  { alt: '微信', img: '/icons/platform/weixin_logo.png', float: 'float-2', style: 'top: 4%; right: 18%;' },
+  { alt: '快手', img: '/icons/platform/kuaishou_logo.png', float: 'float-3', style: 'bottom: 22%; left: 6%;' },
+  { alt: '百度', img: '/icons/platform/baidu_logo.png', float: 'float-4', style: 'top: 32%; left: 28%;' },
+  { alt: '小红书', img: '/icons/platform/xiaohongshu_logo.png', float: 'float-5', style: 'bottom: 12%; right: 22%;' },
+  { alt: '支付宝', img: '/icons/platform/zhifubao_logo.png', float: 'float-1', style: 'top: 32%; right: 8%;' }
+]
+
+const cloudEmojis = [
+  { emoji: '🎬', float: 'float-3', style: 'top: 2%; left: 50%; transform: translateX(-50%); background: #ffe4e6;' },
+  { emoji: '🎬', float: 'float-2', style: 'bottom: 18%; right: 6%; background: #dbeafe;' },
+  { emoji: '🎭', float: 'float-4', style: 'top: 60%; left: 14%; background: #f3e8ff;' },
+  { emoji: '📖', float: 'float-5', style: 'bottom: 4%; left: 30%; background: #d1fae5;' },
+  { emoji: '🖥️', float: 'float-1', style: 'top: 48%; right: 24%; background: #fef3c7;' }
+]
+
 const showcaseColumns = [
   {
     direction: 'up',
@@ -262,7 +257,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ========== 整体 ========== */
 .home-page {
   background:
     radial-gradient(circle at 86% 28%, rgba(255, 183, 135, 0.42), transparent 34%),
@@ -289,7 +283,6 @@ onUnmounted(() => {
   border-bottom: 0;
 }
 
-/* ========== 动画关键帧 ========== */
 @keyframes float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-20px) rotate(5deg); }
@@ -309,10 +302,6 @@ onUnmounted(() => {
 @keyframes slideInRight {
   from { opacity: 0; transform: translateX(40px); }
   to { opacity: 1; transform: translateX(0); }
-}
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
 }
 @keyframes floatRandom1 {
   0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
@@ -360,11 +349,9 @@ onUnmounted(() => {
 .delay-2 { animation-delay: 0.2s; }
 .delay-3 { animation-delay: 0.3s; }
 
-/* 滚动 reveal */
 .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ========== HERO ========== */
 .hero {
   position: relative;
   background: transparent;
@@ -467,7 +454,6 @@ onUnmounted(() => {
 }
 .cta-btn-large { padding: 18px 40px; font-size: 16px; }
 
-/* Hero 图标墙 */
 .hero-cloud {
   position: relative;
   height: 420px;
@@ -531,7 +517,6 @@ onUnmounted(() => {
   animation: bounceDown 1.6s ease-in-out infinite;
 }
 
-/* ========== Section 通用 ========== */
 .section { padding: 96px 0; position: relative; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .section-head { text-align: center; margin-bottom: 64px; }
@@ -550,13 +535,13 @@ onUnmounted(() => {
 }
 .section-desc { margin: 0; font-size: 16px; color: #8b8b9e; }
 
-/* ========== 平台覆盖 ========== */
 .platform-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 20px;
 }
-.platform-card {
+.platform-card,
+.cat-card {
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 24px;
@@ -564,7 +549,8 @@ onUnmounted(() => {
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
 }
-.platform-card:hover {
+.platform-card:hover,
+.cat-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.12);
 }
@@ -589,7 +575,6 @@ onUnmounted(() => {
 .platform-card h3 { margin: 0 0 4px; font-size: 18px; font-weight: 800; }
 .platform-card p { margin: 0; font-size: 13px; color: #b4b4c7; }
 
-/* ========== 品类 ========== */
 .cat-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -597,13 +582,7 @@ onUnmounted(() => {
 }
 .cat-card {
   position: relative;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 24px;
-  padding: 32px;
-  text-align: center;
   overflow: hidden;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s;
 }
 .cat-card::before {
   content: '';
@@ -615,7 +594,6 @@ onUnmounted(() => {
   opacity: 0;
   transition: opacity 0.3s;
 }
-.cat-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.12); }
 .cat-card:hover::before { opacity: 1; }
 .cat-card.cat-yingshi::before { background: linear-gradient(90deg, #f43f5e, #fb7185); }
 .cat-card.cat-playlet::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
@@ -636,7 +614,6 @@ onUnmounted(() => {
 .cat-card h3 { margin: 0 0 4px; font-size: 16px; font-weight: 800; }
 .cat-card p { margin: 0; font-size: 12px; color: #b4b4c7; }
 
-/* ========== 展示墙 ========== */
 .showcase-section {
   background: transparent;
 }
@@ -683,7 +660,6 @@ onUnmounted(() => {
   to { transform: translateY(0); }
 }
 
-/* ========== CTA ========== */
 .cta-section { padding: 96px 24px; }
 .cta-container {
   max-width: 700px;
@@ -693,7 +669,6 @@ onUnmounted(() => {
 .cta-container h2 { margin: 0 0 16px; font-size: 40px; font-weight: 900; letter-spacing: -0.5px; }
 .cta-container p { margin: 0 0 32px; font-size: 17px; color: #8b8b9e; }
 
-/* ========== Footer ========== */
 .site-footer { border-top: 1px solid rgba(0, 0, 0, 0.05); padding: 32px 24px; }
 .footer-inner {
   max-width: 1200px;
@@ -719,7 +694,6 @@ onUnmounted(() => {
 .footer-brand-text { font-weight: 700; font-size: 14px; color: #1a1a2e; }
 .footer-copy { font-size: 12px; color: #c4c4d4; }
 
-/* ========== 响应式 ========== */
 @media (max-width: 900px) {
   .hero-grid { grid-template-columns: 1fr; gap: 48px; }
   .hero-cloud { height: 320px; }

@@ -55,9 +55,9 @@ import Pagination from '@/components/common/Pagination.vue'
 import ProjectFilter from '@/components/project/ProjectFilter.vue'
 import ProjectSearch from '@/components/project/ProjectSearch.vue'
 import ProjectTable from '@/components/project/ProjectTable.vue'
-import { runSync, getSyncTask } from '@/api/sync'
+import { runSync } from '@/api/sync'
 import { useProjects } from '@/composables/useProjects'
-import { useSyncPolling } from '@/composables/useSyncPolling'
+import { useSyncPolling, waitSyncTask } from '@/composables/useSyncPolling'
 
 const {
   loading,
@@ -74,7 +74,6 @@ const {
 
 const keyword = ref('')
 const syncing = ref(false)
-const taskStatus = ref('')
 const syncLabel = computed(() => syncing.value ? '同步中' : '同步/刷新')
 
 let keywordTimer = null
@@ -97,23 +96,11 @@ function changePage(page) {
   loadProjects()
 }
 
-async function pollTask(taskId) {
-  for (let i = 0; i < 20; i += 1) {
-    const task = await getSyncTask(taskId)
-    taskStatus.value = task.status
-    if (task.status === 'success' || task.status === 'failed') return task
-    await new Promise((resolve) => window.setTimeout(resolve, 1000))
-  }
-  return null
-}
-
 async function handleRunSync() {
   syncing.value = true
   try {
     const task = await runSync('novel_miniapp')
-    if (task?.taskId) {
-      await pollTask(task.taskId)
-    }
+    await waitSyncTask(task?.taskId)
     await refresh()
   } finally {
     syncing.value = false

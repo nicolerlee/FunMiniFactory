@@ -1,5 +1,7 @@
 import { onBeforeUnmount, ref } from 'vue'
-import { getSyncStatus } from '@/api/sync'
+import { getSyncStatus, getSyncTask } from '@/api/sync'
+
+const FINISHED_TASK_STATUSES = new Set(['success', 'failed', 'not_found'])
 
 export function useSyncPolling(onChanged, interval = 30000) {
   const statuses = ref([])
@@ -38,4 +40,14 @@ export function useSyncPolling(onChanged, interval = 30000) {
   onBeforeUnmount(stop)
 
   return { statuses, loading, start, stop, loadStatus }
+}
+
+export async function waitSyncTask(taskId, { attempts = 20, interval = 1000 } = {}) {
+  if (!taskId) return null
+  for (let i = 0; i < attempts; i += 1) {
+    const task = await getSyncTask(taskId)
+    if (FINISHED_TASK_STATUSES.has(task.status)) return task
+    await new Promise((resolve) => window.setTimeout(resolve, interval))
+  }
+  return null
 }

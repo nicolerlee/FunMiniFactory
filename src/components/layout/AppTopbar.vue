@@ -18,7 +18,7 @@
             <line x1="12" y1="17" x2="12" y2="21" />
           </svg>
         </span>
-        <span class="brand-text">FunMini</span>
+        <span class="brand-text">FunMini Factory</span>
       </RouterLink>
       <div class="topbar-nav">
         <RouterLink
@@ -64,7 +64,7 @@ function isActive(item) {
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 0;
   /* 锁定字体，避免被父级（HomeView 的 Plus Jakarta Sans / FactoryView 的 Inter）继承差异影响 */
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -98,9 +98,9 @@ function isActive(item) {
 }
 
 .brand-text {
-  font-weight: 800;
+  font-weight: 700;
   font-size: 16px;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.01em;
   color: #1a1a2e;
 }
 

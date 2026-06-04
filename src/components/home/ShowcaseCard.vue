@@ -1,134 +1,20 @@
 <template>
   <div class="sc-card" :style="cardStyle">
-    <!-- 顶栏：胶囊 + 标题 -->
     <div class="sc-header">
       <div class="sc-dots"><span></span><span></span><span></span></div>
       <span class="sc-title">{{ card.title }}</span>
       <span class="sc-close">·</span>
     </div>
 
-    <!-- 主体 -->
     <div class="sc-body" :style="bodyStyle">
-      <!-- 影视：大封面 + 列表 -->
-      <template v-if="card.type === 'video'">
-        <div class="block big">🎬</div>
-        <div class="bar w80"></div>
-        <div class="bar w60"></div>
-        <div class="row-block"></div>
-        <div class="row-block"></div>
-        <div class="row-block"></div>
-      </template>
-
-      <!-- 短剧 2x2 ▶️ -->
-      <template v-else-if="card.type === 'drama'">
-        <div class="grid grid-2">
-          <div class="cell">▶️</div>
-          <div class="cell">▶️</div>
-          <div class="cell">▶️</div>
-          <div class="cell">▶️</div>
-        </div>
-      </template>
-
-      <!-- 小说书架：图书行 -->
-      <template v-else-if="card.type === 'novel'">
-        <div v-for="i in 5" :key="i" class="book-row">
-          <div class="book-cover"></div>
-          <div class="book-meta">
-            <div class="bar w70"></div>
-            <div class="bar w40 thin"></div>
-          </div>
-        </div>
-      </template>
-
-      <!-- 漫剧大图 + 标题 -->
-      <template v-else-if="card.type === 'comic'">
-        <div class="block big-55">🎭</div>
-        <div class="bar w75"></div>
-        <div class="bar w50"></div>
-        <div class="row-block sm"></div>
-      </template>
-
-      <!-- H5 互动：banner + 网格 -->
-      <template v-else-if="card.type === 'h5'">
-        <div class="banner">Banner</div>
-        <div class="grid grid-3">
-          <div v-for="i in 6" :key="i" class="cell-sm"></div>
-        </div>
-        <div class="row-block sm"></div>
-        <div class="row-block sm"></div>
-      </template>
-
-      <!-- 影视宫格 -->
-      <template v-else-if="card.type === 'video-grid'">
-        <div class="grid grid-2 cards">
-          <div v-for="i in 6" :key="i" class="grid-card">
-            <div class="dot"></div>
-            <div class="bar w70"></div>
-          </div>
-        </div>
-      </template>
-
-      <!-- 排行榜 -->
-      <template v-else-if="card.type === 'rank'">
-        <div v-for="(item, i) in 5" :key="i" class="rank-row">
-          <div class="rank-no" :class="rankClass(i)">{{ i + 1 }}</div>
-          <div class="bar flex-grow"></div>
-        </div>
-      </template>
-
-      <!-- 阅读器：纯文字行 -->
-      <template v-else-if="card.type === 'reader'">
-        <div class="reader">
-          <div v-for="(w, i) in [100, 95, 98, 90, 100, 85, 100, 92]" :key="i"
-               class="bar reader-line" :style="{ width: `${w}%` }"></div>
-        </div>
-      </template>
-
-      <!-- 漫剧宫格 -->
-      <template v-else-if="card.type === 'comic-grid'">
-        <div class="comic-banner"></div>
-        <div class="grid grid-3 thumbs">
-          <div v-for="i in 3" :key="i" class="thumb"></div>
-        </div>
-        <div class="bar w80"></div>
-        <div class="bar w60"></div>
-        <div class="row-block sm"></div>
-        <div class="row-block sm"></div>
-      </template>
-
-      <!-- H5 商品宫格 -->
-      <template v-else-if="card.type === 'h5-grid'">
-        <div class="grid grid-2 cards">
-          <div v-for="i in 4" :key="i" class="grid-card">
-            <div class="thumb-sq"></div>
-            <div class="bar w80 thin"></div>
-            <div class="bar w40 thin"></div>
-          </div>
-        </div>
-      </template>
-
-      <!-- 搜索页 -->
-      <template v-else-if="card.type === 'search'">
-        <div class="search-bar"><span>🔍</span></div>
-        <div class="row-block"></div>
-        <div class="row-block"></div>
-        <div class="row-block"></div>
-        <div class="row-block"></div>
-      </template>
-
-      <!-- 小说宫格 -->
-      <template v-else-if="card.type === 'novel-grid'">
-        <div class="grid grid-3 thumbs">
-          <div v-for="i in 3" :key="i" class="thumb"></div>
-        </div>
-        <div class="bar w75"></div>
-        <div class="bar w50"></div>
-        <div class="row-block sm"></div>
-        <div class="row-block sm"></div>
-      </template>
+      <component
+        :is="part.component"
+        v-for="(part, index) in layout"
+        :key="index"
+        v-bind="part.props"
+      />
     </div>
 
-    <!-- 底栏 -->
     <div class="sc-tabbar">
       <div
         v-for="(t, i) in card.tabs"
@@ -144,13 +30,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, defineComponent, h } from 'vue'
 
 const props = defineProps({
   card: { type: Object, required: true }
 })
 
-// 不同类型卡片的高宽比（对应原型 aspect-ratio）
 const aspectMap = {
   video: '9/16',
   drama: '3/4',
@@ -166,6 +51,136 @@ const aspectMap = {
   'novel-grid': '2/3'
 }
 
+const RowBlocks = defineComponent({
+  props: {
+    count: { type: Number, default: 1 },
+    small: { type: Boolean, default: false }
+  },
+  setup(props) {
+    return () => Array.from({ length: props.count }, (_, i) =>
+      h('div', { class: ['row-block', { sm: props.small }], key: i })
+    )
+  }
+})
+
+const Bars = defineComponent({
+  props: {
+    widths: { type: Array, default: () => [] },
+    reader: { type: Boolean, default: false }
+  },
+  setup(props) {
+    return () => props.widths.map((width, i) =>
+      h('div', {
+        class: ['bar', props.reader && 'reader-line', typeof width === 'string' && width],
+        style: typeof width === 'number' ? { width: `${width}%` } : null,
+        key: i
+      })
+    )
+  }
+})
+
+const Block = defineComponent({
+  props: {
+    size: { type: String, default: 'big' },
+    icon: { type: String, default: '' }
+  },
+  setup(props) {
+    return () => h('div', { class: ['block', props.size] }, props.icon)
+  }
+})
+
+const Grid = defineComponent({
+  props: {
+    columns: { type: Number, default: 2 },
+    count: { type: Number, default: 4 },
+    itemClass: { type: String, default: 'cell' },
+    card: { type: String, default: '' },
+    product: { type: Boolean, default: false },
+    icon: { type: String, default: '' }
+  },
+  setup(props) {
+    return () => h('div', { class: ['grid', `grid-${props.columns}`, props.card] },
+      Array.from({ length: props.count }, (_, i) => {
+        const children = props.itemClass === 'grid-card'
+          ? [
+              h('div', { class: props.product ? 'thumb-sq' : 'dot' }),
+              h('div', { class: ['bar', props.product ? 'w80 thin' : 'w70'] }),
+              props.product ? h('div', { class: 'bar w40 thin' }) : null
+            ]
+          : props.icon
+        return h('div', { class: props.itemClass, key: i }, children)
+      })
+    )
+  }
+})
+
+const BookList = defineComponent({
+  props: {
+    count: { type: Number, default: 5 }
+  },
+  setup(props) {
+    return () => Array.from({ length: props.count }, (_, i) =>
+      h('div', { class: 'book-row', key: i }, [
+        h('div', { class: 'book-cover' }),
+        h('div', { class: 'book-meta' }, [
+          h('div', { class: 'bar w70' }),
+          h('div', { class: 'bar w40 thin' })
+        ])
+      ])
+    )
+  }
+})
+
+const RankList = defineComponent({
+  setup() {
+    return () => Array.from({ length: 5 }, (_, i) =>
+      h('div', { class: 'rank-row', key: i }, [
+        h('div', { class: ['rank-no', rankClass(i)] }, i + 1),
+        h('div', { class: 'bar flex-grow' })
+      ])
+    )
+  }
+})
+
+const Reader = defineComponent({
+  setup() {
+    return () => h('div', { class: 'reader' },
+      h(Bars, { widths: [100, 95, 98, 90, 100, 85, 100, 92], reader: true })
+    )
+  }
+})
+
+const Banner = defineComponent({
+  props: {
+    label: { type: String, default: '' },
+    compact: { type: Boolean, default: false }
+  },
+  setup(props) {
+    return () => h('div', { class: props.compact ? 'comic-banner' : 'banner' }, props.label)
+  }
+})
+
+const SearchBar = defineComponent({
+  setup() {
+    return () => h('div', { class: 'search-bar' }, h('span', '🔍'))
+  }
+})
+
+const layoutMap = {
+  video: [[Block, { icon: '🎬' }], [Bars, { widths: ['w80', 'w60'] }], [RowBlocks, { count: 3 }]],
+  drama: [[Grid, { columns: 2, count: 4, icon: '▶️' }]],
+  novel: [[BookList]],
+  comic: [[Block, { icon: '🎭', size: 'big-55' }], [Bars, { widths: ['w75', 'w50'] }], [RowBlocks, { small: true }]],
+  h5: [[Banner, { label: 'Banner' }], [Grid, { columns: 3, count: 6, itemClass: 'cell-sm' }], [RowBlocks, { count: 2, small: true }]],
+  'video-grid': [[Grid, { columns: 2, count: 6, itemClass: 'grid-card', card: 'cards' }]],
+  rank: [[RankList]],
+  reader: [[Reader]],
+  'comic-grid': [[Banner, { compact: true }], [Grid, { columns: 3, count: 3, itemClass: 'thumb', card: 'thumbs' }], [Bars, { widths: ['w80', 'w60'] }], [RowBlocks, { count: 2, small: true }]],
+  'h5-grid': [[Grid, { columns: 2, count: 4, itemClass: 'grid-card', card: 'cards', product: true }]],
+  search: [[SearchBar], [RowBlocks, { count: 4 }]],
+  'novel-grid': [[Grid, { columns: 3, count: 3, itemClass: 'thumb', card: 'thumbs' }], [Bars, { widths: ['w75', 'w50'] }], [RowBlocks, { count: 2, small: true }]]
+}
+
 const cardStyle = computed(() => ({
   aspectRatio: aspectMap[props.card.type] || '3/4'
 }))
@@ -174,7 +189,8 @@ const bodyStyle = computed(() => ({
   background: `linear-gradient(to bottom, ${props.card.from}, ${props.card.to})`
 }))
 
-// 默认第 1 个 tab 高亮，部分卡用第 2 个
+const layout = computed(() => (layoutMap[props.card.type] || []).map(([component, props = {}]) => ({ component, props })))
+
 const activeTabIndex = computed(() => {
   if (props.card.type === 'reader' || props.card.type === 'search' || props.card.type === 'novel-grid') return 1
   return 0
@@ -184,7 +200,6 @@ function rankClass(i) {
   return ['rank-1', 'rank-2', 'rank-3', '', ''][i] || ''
 }
 
-// 用 emoji 替代 fontawesome；保持极简
 const ICONS = {
   home: '🏠',
   compass: '🧭',

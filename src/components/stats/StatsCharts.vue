@@ -1,25 +1,27 @@
 <template>
   <section class="echart-grid" aria-label="统计图表">
+    <!-- 分类占比：H5 合并，非 H5 保留 -->
     <div class="echart-panel">
       <div class="echart-head">
         <div>
           <h2>分类占比</h2>
-          <span>不同 category 的项目占比</span>
+          <span>小程序 vs H5 的项目分布</span>
         </div>
         <strong>{{ number(stats.total) }}</strong>
       </div>
       <div ref="categoryChartRef" class="echart-box"></div>
     </div>
 
+    <!-- H5 细分占比 -->
     <div class="echart-panel">
       <div class="echart-head">
         <div>
-          <h2>平台占比</h2>
-          <span>不同 platform 的项目占比</span>
+          <h2>H5 细分占比</h2>
+          <span>H5 各子类项目分布</span>
         </div>
-        <strong>{{ number(stats.total) }}</strong>
+        <strong>{{ number(h5Total) }}</strong>
       </div>
-      <div ref="platformChartRef" class="echart-box"></div>
+      <div ref="h5ChartRef" class="echart-box"></div>
     </div>
 
     <div class="echart-panel wide">
@@ -54,19 +56,29 @@ const props = defineProps({
 })
 
 const categoryChartRef = ref(null)
-const platformChartRef = ref(null)
+const h5ChartRef = ref(null)
 const categoryPlatformChartRef = ref(null)
 const trendChartRef = ref(null)
 
 let categoryChart = null
-let platformChart = null
+let h5Chart = null
 let categoryPlatformChart = null
 let trendChart = null
 let resizeObserver = null
 let echarts = null
 
 const palette = ['#c44a1c', '#3157d5', '#2f8f58', '#7c3aed', '#d18b1f', '#be3455', '#0f766e', '#64748b']
+const h5Palette = ['#f59e0b', '#ef4444', '#8b5cf6', '#10b981']
+
+const h5Keys = ['h5_novel', 'h5_yingshi', 'h5_fenxiao', 'h5_laxin']
+
 const trendTotal = computed(() => (props.stats.newTrend || []).reduce((sum, item) => sum + Number(item.count || 0), 0))
+
+const h5Total = computed(() => {
+  return (props.stats.byCategory || [])
+    .filter((item) => h5Keys.includes(item.category))
+    .reduce((sum, item) => sum + Number(item.count || 0), 0)
+})
 
 watch(() => props.stats, renderCharts, { deep: true })
 
@@ -74,11 +86,11 @@ onMounted(async () => {
   await nextTick()
   echarts = await import('echarts')
   categoryChart = echarts.init(categoryChartRef.value)
-  platformChart = echarts.init(platformChartRef.value)
+  h5Chart = echarts.init(h5ChartRef.value)
   categoryPlatformChart = echarts.init(categoryPlatformChartRef.value)
   trendChart = echarts.init(trendChartRef.value)
   resizeObserver = new ResizeObserver(resizeCharts)
-  ;[categoryChartRef, platformChartRef, categoryPlatformChartRef, trendChartRef].forEach((chartRef) => {
+  ;[categoryChartRef, h5ChartRef, categoryPlatformChartRef, trendChartRef].forEach((chartRef) => {
     resizeObserver.observe(chartRef.value)
   })
   renderCharts()
@@ -86,19 +98,33 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
-  ;[categoryChart, platformChart, categoryPlatformChart, trendChart].forEach((chart) => chart?.dispose())
+  ;[categoryChart, h5Chart, categoryPlatformChart, trendChart].forEach((chart) => chart?.dispose())
 })
 
 function renderCharts() {
   if (!categoryChart) return
-  categoryChart.setOption(buildPieOption(
-    (props.stats.byCategory || []).map((item) => ({ name: categoryLabel(item.category), value: item.count })),
-    'category'
-  ), true)
-  platformChart.setOption(buildPieOption(
-    (props.stats.byPlatform || []).map((item) => ({ name: platformLabel(item.platform), value: item.count })),
-    'platform'
-  ), true)
+
+  // 分类占比：非 H5 保留原名，H5 四个子类合并为 "H5"
+  const categoryData = []
+  let h5Sum = 0
+  for (const item of props.stats.byCategory || []) {
+    if (h5Keys.includes(item.category)) {
+      h5Sum += Number(item.count || 0)
+    } else {
+      categoryData.push({ name: categoryLabel(item.category), value: item.count })
+    }
+  }
+  if (h5Sum > 0) {
+    categoryData.push({ name: 'H5', value: h5Sum })
+  }
+  categoryChart.setOption(buildPieOption(categoryData, 'category'), true)
+
+  // H5 细分占比
+  const h5Data = (props.stats.byCategory || [])
+    .filter((item) => h5Keys.includes(item.category))
+    .map((item) => ({ name: categoryLabel(item.category), value: item.count }))
+  h5Chart.setOption(buildH5PieOption(h5Data), true)
+
   categoryPlatformChart.setOption(buildStackOption(), true)
   trendChart.setOption(buildTrendOption(), true)
 }
@@ -118,7 +144,7 @@ function buildPieOption(data, seriesName) {
       top: 'middle',
       itemWidth: 10,
       itemHeight: 10,
-      textStyle: { color: '#626273', fontWeight: 700 }
+      textStyle: { color: '#626273', fontWeight: 600 }
     },
     series: [
       {
@@ -135,7 +161,51 @@ function buildPieOption(data, seriesName) {
         label: {
           formatter: '{b}\n{d}%',
           color: '#1a1a2e',
-          fontWeight: 800
+          fontWeight: 600
+        },
+        labelLine: {
+          length: 12,
+          length2: 8
+        },
+        data: sorted
+      }
+    ]
+  }
+}
+
+function buildH5PieOption(data) {
+  const sorted = data.filter((item) => Number(item.value || 0) > 0).sort((a, b) => b.value - a.value)
+  return {
+    color: h5Palette,
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}<br/>{c} 个 ({d}%)'
+    },
+    legend: {
+      type: 'scroll',
+      orient: 'vertical',
+      right: 10,
+      top: 'middle',
+      itemWidth: 10,
+      itemHeight: 10,
+      textStyle: { color: '#626273', fontWeight: 600 }
+    },
+    series: [
+      {
+        name: 'h5',
+        type: 'pie',
+        radius: ['46%', '72%'],
+        center: ['35%', '52%'],
+        avoidLabelOverlap: true,
+        itemStyle: {
+          borderColor: '#fff',
+          borderWidth: 3,
+          borderRadius: 6
+        },
+        label: {
+          formatter: '{b}\n{d}%',
+          color: '#1a1a2e',
+          fontWeight: 600
         },
         labelLine: {
           length: 12,
@@ -163,7 +233,7 @@ function buildStackOption() {
     },
     legend: {
       top: 0,
-      textStyle: { color: '#626273', fontWeight: 700 }
+      textStyle: { color: '#626273', fontWeight: 600 }
     },
     grid: {
       top: 42,
@@ -174,13 +244,13 @@ function buildStackOption() {
     xAxis: {
       type: 'value',
       max: 100,
-      axisLabel: { formatter: '{value}%', color: '#8b8b9e', fontWeight: 700 },
+      axisLabel: { formatter: '{value}%', color: '#8b8b9e', fontWeight: 600 },
       splitLine: { lineStyle: { color: 'rgba(0,0,0,0.06)' } }
     },
     yAxis: {
       type: 'category',
       data: categories.map(categoryLabel),
-      axisLabel: { color: '#1a1a2e', fontWeight: 800 },
+      axisLabel: { color: '#1a1a2e', fontWeight: 600 },
       axisTick: { show: false },
       axisLine: { show: false }
     },
@@ -217,14 +287,14 @@ function buildTrendOption() {
       type: 'category',
       boundaryGap: false,
       data: rows.map((item) => shortDate(item.date)),
-      axisLabel: { color: '#8b8b9e', fontWeight: 700 },
+      axisLabel: { color: '#8b8b9e', fontWeight: 600 },
       axisTick: { show: false },
       axisLine: { lineStyle: { color: 'rgba(0,0,0,0.08)' } }
     },
     yAxis: {
       type: 'value',
       minInterval: 1,
-      axisLabel: { color: '#8b8b9e', fontWeight: 700 },
+      axisLabel: { color: '#8b8b9e', fontWeight: 600 },
       splitLine: { lineStyle: { color: 'rgba(0,0,0,0.06)' } }
     },
     series: [
@@ -248,7 +318,7 @@ function categoryTotal(category) {
 }
 
 function resizeCharts() {
-  ;[categoryChart, platformChart, categoryPlatformChart, trendChart].forEach((chart) => chart?.resize())
+  ;[categoryChart, h5Chart, categoryPlatformChart, trendChart].forEach((chart) => chart?.resize())
 }
 
 function number(value) {

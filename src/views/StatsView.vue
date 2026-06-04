@@ -6,7 +6,7 @@
         <div class="stats-page-header">
           <div>
             <h1>统计看板</h1>
-            <p>按分类、平台、分类内平台结构和新增趋势分析小程序资产</p>
+            <p>按分类、H5 细分、分类内平台结构和新增趋势分析小程序资产</p>
           </div>
           <button class="sync-button" type="button" :disabled="loadingStats" @click="refreshStats">
             <RefreshCw :size="16" :class="{ spin: loadingStats }" />
